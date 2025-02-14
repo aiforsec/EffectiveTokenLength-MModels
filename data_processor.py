@@ -1,184 +1,240 @@
-import faiss
-import numpy as np
-#import libraries 
-import sys
-import os
+"""
+Combined module for image and text vectorization, evaluation, and FAISS indexing.
 
+This module provides functionality to:
+  - Construct full image file paths from a CSV containing file names.
+  - Process images and texts using provided vectorizer instances.
+  - Create a FAISS index for fast similarity search.
+  - Evaluate text-to-image retrieval using FAISS indices with metrics such as MRR@10 and Recall@X.
+  
+Notes:
+  - For images, the CSV should have an "image_filename" column.
+  - For texts, simply use Pandas' read_csv to extract documents.
+  - The vectorizer objects must implement:
+      - get_image_features(image) for image vectorization.
+      - get_text_features(text) for text vectorization.
+"""
+
+import os
+from typing import List, Any
+
+import numpy as np
+import pandas as pd
 import faiss
 from PIL import Image, ImageFile
-import pandas as pd
-import numpy as np
-import re
 
+# Allow PIL to load truncated images
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
+# ============================
+# CSV Processing Functions
+# ============================
 
-def split_string_into_n_parts(text, n_parts):
+def get_ordered_paths(directory_path: str, csv_file_path: str) -> List[str]:
     """
-    Split a string into `n_parts` roughly equal parts based on word count.
+    Reads a CSV file containing file names and constructs full paths by joining
+    them with the provided directory. Assumes the CSV has an "image_filename" column.
 
     Args:
-        text (str): The input string to be split.
-        n_parts (int): The number of parts to split the string into.
+        directory_path (str): The base directory where image files are stored.
+        csv_file_path (str): Path to the CSV file containing image file names.
 
     Returns:
-        list: A list of strings, each representing a portion of the original text.
+        List[str]: List of full file paths in the order provided by the CSV.
+    """
+    df = pd.read_csv(csv_file_path, dtype={'image_filename': str})
+    file_names = df['image_filename'].tolist()
+    return [os.path.join(directory_path, file_name) for file_name in file_names]
 
-    Notes:
-        - The splitting is performed by dividing the text into groups of words.
-        - If the number of words is not evenly divisible by `n_parts`, 
-          the last part may contain more or fewer words than the others.
-        - A minimum of one word is ensured in each part.
+# ============================
+# Utility Functions
+# ============================
 
+def split_string_into_n_parts(text: str, n_parts: int) -> List[str]:
+    """
+    Splits a string into n_parts roughly equal parts based on word count.
+
+    Args:
+        text (str): The input string to split.
+        n_parts (int): The number of parts to split the text into.
+
+    Returns:
+        List[str]: A list of text segments.
     """
     words = text.split()
     split_size = max(1, len(words) // n_parts)
-    return [" ".join(words[i:i+split_size]) for i in range(0, len(words), split_size)]
+    return [" ".join(words[i:i + split_size]) for i in range(0, len(words), split_size)]
 
-def process_text(content, text_vectorizer):
+# ============================
+# Text Processing Functions
+# ============================
+
+def process_text(content: str, text_vectorizer: Any) -> np.ndarray:
     """
-    Process a single text file and extract its vector representation.
+    Processes a single text document to extract its vector representation.
+    If direct vectorization fails, splits the text into parts and averages their vectors.
 
     Args:
-        path (str): The file path of the text file to process.
-        text_vectorizer: An instance of a text vectorizer with a `get_text_features` method.
+        content (str): The text content to process.
+        text_vectorizer: An object with a `get_text_features` method.
 
     Returns:
-        np.ndarray: The vector representation of the text content.
+        np.ndarray: The vector representation of the text.
     """
-
-    """
-    Process text files in the specified paths, vectorize their content, and handle 
-    errors gracefully if vectorization fails. If direct vectorization fails, the 
-    content is split into progressively smaller parts, and their vectors are averaged 
-    to produce the final vector representation.
-
-    Steps:
-    1. Open each file and read its content.
-    2. Try to vectorize the content directly.
-    3. If direct vectorization fails, split the content into multiple parts and 
-    attempt vectorization for each part, averaging the resulting vectors.
-    4. Print the resulting vector representation for each file.
-
-    """
-    
     try:
-        # Try to vectorize the content directly
+        # Direct vectorization
         return text_vectorizer.get_text_features(content)[0]
-    except Exception as e:
-        
-        # Start splitting and retrying
+    except Exception:
+        # On failure, try splitting the text into parts and averaging the resulting vectors.
         n_parts = 2
         while True:
             try:
-                # Split the content into n_parts and average their vectors
-                split_contents = split_string_into_n_parts(str(content), n_parts)
-                split_vectors = [text_vectorizer.get_text_features(part)[0] for part in split_contents]
-                return np.mean(split_vectors, axis=0)  # Take the average vector
-            except Exception as split_error:
-                
-                n_parts += 1  # Increase the number of parts to split into
+                parts = split_string_into_n_parts(content, n_parts)
+                vectors = [text_vectorizer.get_text_features(part)[0] for part in parts]
+                return np.mean(vectors, axis=0)
+            except Exception:
+                n_parts += 1  # Increase number of splits until successful
 
-def process_all_text(texts, text_vectorizer):
+def process_all_texts(texts: List[str], text_vectorizer: Any) -> List[np.ndarray]:
     """
-    Process multiple text files and extract vector representations for each.
+    Processes multiple text documents and extracts their vector representations.
 
     Args:
-        paths (list of str): List of file paths to process.
-        text_vectorizer: An instance of a text vectorizer with a `get_text_features` method.
+        texts (List[str]): A list of text documents.
+        text_vectorizer: An object with a `get_text_features` method.
 
     Returns:
-        list of np.ndarray: List of vector representations for the text files.
-        list of str: List of processed file paths.
+        List[np.ndarray]: A list of vector representations for each text document.
     """
-    all_text_vectors = []
-    for content in texts:
-        
-        text_vector = process_text(content, text_vectorizer)
-        all_text_vectors.append(text_vector)
+    return [process_text(text, text_vectorizer) for text in texts]
 
-    return all_text_vectors
+# ============================
+# Image Processing Functions
+# ============================
 
-
-def process_image(path, image_vectorizer):
+def process_image(path: str, image_vectorizer: Any) -> np.ndarray:
     """
-    Process a single image file and extract its vector representation.
+    Processes a single image file to extract its vector representation.
 
     Args:
-        path (str): The file path of the image to process.
-        image_vectorizer: An instance of an image vectorizer with a `get_image_features` method.
+        path (str): The full path to the image file.
+        image_vectorizer: An object with a `get_image_features` method.
 
     Returns:
         np.ndarray: The vector representation of the image.
-    """
 
-    # Open the image
+    Raises:
+        ValueError: If the image cannot be loaded.
+    """
     try:
-        image = Image.open(path)  # Ensure the image is in RGB format
+        image = Image.open(path)
     except Exception as e:
         raise ValueError(f"Error loading image at {path}: {e}")
-
-    # Extract the vector using the vectorizer
     return image_vectorizer.get_image_features(image)[0]
 
-def process_all_images(paths, image_vectorizer):
+def process_all_images(paths: List[str], image_vectorizer: Any) -> List[np.ndarray]:
     """
-    Process multiple image files and extract vector representations for each.
+    Processes multiple image files and extracts their vector representations.
 
     Args:
-        paths (list of str): List of image file paths to process.
-        image_vectorizer: An instance of an image vectorizer with a `get_image_features` method.
+        paths (List[str]): List of image file paths.
+        image_vectorizer: An object with a `get_image_features` method.
 
     Returns:
-        list of np.ndarray: List of vector representations for the image files.
-        list of str: List of processed image file paths.
+        List[np.ndarray]: A list of vector representations for the images.
     """
-    all_image_vectors = []
-    all_image_file_paths = []
-
+    vectors = []
     for path in paths:
-        all_image_file_paths.append(path)
-        
         try:
-            # Vectorize the image
-            image_vector = process_image(path, image_vectorizer)
-            all_image_vectors.append(image_vector)
+            vec = process_image(path, image_vectorizer)
+            vectors.append(vec)
         except Exception as e:
-            
-            all_image_vectors.append(np.random.rand(*np.array(all_image_vectors[0]).shape).astype(np.float32))
+            # If processing fails, use a random fallback vector.
+            if vectors:
+                fallback_shape = np.array(vectors[0]).shape
+            else:
+                fallback_shape = (512,)  # Adjust fallback dimensions as needed.
+            random_vec = np.random.rand(*fallback_shape).astype(np.float32)
+            vectors.append(random_vec)
             print(f"Failed to process image at {path}: {e}")
+    return vectors
 
-    return all_image_vectors, all_image_file_paths
+# ============================
+# FAISS Index Creation
+# ============================
 
-
-def make_faiss_index(vectors):
+def make_faiss_index(vectors: List[np.ndarray]) -> faiss.IndexFlatL2:
     """
-    Creates a FAISS index for fast similarity search using L2 distance.
-    
+    Creates a FAISS index from a list of feature vectors for fast similarity search using L2 distance.
+
     Args:
-        vectors (list or numpy.ndarray): An array of feature vectors to index.
-    
+        vectors (List[np.ndarray]): List of feature vectors.
+
     Returns:
-        faiss.IndexFlatL2: A FAISS index containing the provided vectors.
-    
+        faiss.IndexFlatL2: The FAISS index built from the provided vectors.
+
     Raises:
-        ValueError: If the input vector list is empty.
+        ValueError: If the vector list is empty.
     """
     if not vectors:
         raise ValueError("Vector array is empty. Provide valid vectors.")
     
-    # Convert list of vectors to a NumPy array with float32 type
-    vectors = np.array(vectors, dtype=np.float32)
-    
-    # Determine the dimensionality of the vectors
-    dim = vectors.shape[1]
-    
-    # Create a FAISS index with L2 distance metric
+    vectors_array = np.array(vectors, dtype=np.float32)
+    dim = vectors_array.shape[1]
     index = faiss.IndexFlatL2(dim)
-    
-    # Add vectors to the FAISS index
-    index.add(vectors)
-    
+    index.add(vectors_array)
     return index
 
-   
+# ============================
+# Evaluation Metrics
+# ============================
+
+def get_metrics(text_db: faiss.Index, image_db: faiss.Index, k: int = 1000) -> pd.DataFrame:
+    """
+    Compute evaluation metrics for a text-to-image database search task.
+    
+    For each text vector in text_db, the function retrieves the top k nearest neighbors
+    from image_db and computes:
+      - MRR@10: Reciprocal rank of the first correct match among the top 10 results.
+      - Recall@1, Recall@10, Recall@1000: Whether the correct match is found in the top 1, 10, or 100 results.
+    
+    Args:
+        text_db (faiss.Index): A FAISS index containing text vectors.
+        image_db (faiss.Index): A FAISS index containing image vectors.
+        k (int): The number of nearest neighbors to retrieve during the search.
+
+    Returns:
+        pd.DataFrame: A DataFrame containing the calculated metrics (MRR@10, Recall@1, Recall@10, Recall@1000).
+    """
+    metrics = []
+
+    for i in range(text_db.ntotal):
+        # Query the text vector
+        query = np.array([text_db.reconstruct(i)])
+        # Perform the search in the image database
+        distances, indices = image_db.search(query, k)
+        indices = indices[0]
+        metric_row = []
+
+        # Compute MRR@10: reciprocal rank if the correct image (assumed same index as text) is in top 10
+        if i in indices[:10]:
+            metric_row.append(1 / (np.where(indices[:10] == i)[0][0] + 1))
+        else:
+            metric_row.append(0)
+
+        # Compute Recall@1, Recall@10, Recall@1000
+        for recall in [1, 10, 100]:
+            metric_row.append(int(i in indices[:recall]))
+        
+        metrics.append(metric_row)
+
+    # Calculate the average metrics across all queries
+    average_metrics = np.mean(metrics, axis=0)
+
+    # Create a DataFrame to store the results
+    metrics_df = pd.DataFrame({
+        "Metric": ["MRR@10", "Recall@1", "Recall@10", "Recall@1000"],
+        "Value": average_metrics
+    })
+
+    return metrics_df
