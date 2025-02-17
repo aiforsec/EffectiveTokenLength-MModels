@@ -1,0 +1,22 @@
+# config.yaml
+
+model:
+  # model name ["clip_base", "clip_large", "openclip", "longclip", "align", "blip2"]
+  type: "openclip" 
+  # pretrained: "openai"
+  # checkpoint path for "longclip" model:
+  checkpoint_path: "/path/to/checkpoint.pt"
+
+paths:
+  csv_path: "/path/to/data.csv"
+  image_folder: "/path/to/images"
+  faiss_save_dir: "/path/to/faiss_save_dir"
+  results_dir: "/path/to/results"
+
+output:
+  name: "/path/to/output"
+
+token_steps:
+  start: 1
+  stop: 200
+  step: 10
