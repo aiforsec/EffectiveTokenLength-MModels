@@ -2,8 +2,8 @@
 
 model:
   # model name ["clip_base", "clip_large", "openclip", "longclip", "align", "blip2"]
-  type: "openclip" 
-  # pretrained: "openai"
+  name: "clip_base" 
+
   # checkpoint path for "longclip" model:
   checkpoint_path: "/path/to/checkpoint.pt"
 
@@ -14,7 +14,7 @@ paths:
   results_dir: "/path/to/results"
 
 output:
-  name: "/path/to/output"
+  name: "output"
 
 token_steps:
   start: 1
