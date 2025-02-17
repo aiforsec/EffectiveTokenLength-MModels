@@ -50,9 +50,6 @@ Follow these steps to set up the project locally:
 3. **Install Dependencies:**
     pip install -r requirements.txt
 
-4. **Configuration:**
-    Adjust settings in the configuration file (e.g., config.yaml) to suit your experimental setup.
-
 ---
 
 ## Datasets
@@ -87,8 +84,6 @@ This project relies on four main datasets: **Urban1k**, **Roco**, **Factify**, a
 ---
 
 ### ShareGPT4V
-
-- **Hosting:** Private / Internal
 - **Description:** ShareGPT4V is a general domain dataset.
 - **Access Instructions:**
   1. Access the dataset from here [SHAREGPT4V](https://sharegpt4v.github.io/)
