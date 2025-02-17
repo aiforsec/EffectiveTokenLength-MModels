@@ -8,15 +8,15 @@ model:
   checkpoint_path: "/path/to/checkpoint.pt"
 
 paths:
-  csv_path: "/path/to/data.csv"
-  image_folder: "/path/to/images"
-  faiss_save_dir: "/path/to/faiss_save_dir"
-  results_dir: "/path/to/results"
+  csv_path: "/path/to/data.csv" #Path to csv file containing image paths and captions
+  image_folder: "/path/to/images" #Path to folder containing images
+  faiss_save_dir: "/path/to/faiss_save_dir" #Path to save faiss index
+  results_dir: "/path/to/results" #Path to save results
 
-output:
-  name: "output"
+dataset:
+  name: "dataset_name" #Name used while saving results
 
 token_steps:
-  start: 1
-  stop: 200
-  step: 10
+  start: 1 #Start token length
+  stop: 200 #Stop token length
+  step: 10 #Step size for token length
