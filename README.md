@@ -28,7 +28,6 @@ In modern multimodal architectures, models process diverse types of input data w
 
 - **Multimodal Analysis:** Assess effective token lengths across text, image, and hybrid data.
 - **Benchmarking Tools:** Run evaluations to see how token usage correlates with model performance.
-- **Customizable Pipelines:** Adapt tokenization and processing strategies for your specific needs.
 - **Visualization:** Generate plots and reports to better understand token efficiency.
 - **Extensible Architecture:** Easily integrate new experiments or modify existing ones.
 
