@@ -37,9 +37,9 @@ def preprocess_urban1k(caption_dir, image_dir, output_csv):
 
 
 if __name__ == "__main__":
-    caption_folder = "path/to/Urban1k/caption"  # Replace with your desired input folder for captions
-    image_folder   = "path/to/Urban1k/image"    # Replace with your desired input folder for images
-    output_csv     = "path/to/your/urban1k.csv" # Replace with your desired output CSV file path
+    caption_folder = "D:/GitHub/multimodal/Urban1k/caption"
+    image_folder   = "D:/GitHub/multimodal/Urban1k/image"
+    output_csv     = "D:/GitHub/EffectiveTokenLength-MModels/urban1k.csv"
 
     preprocess_urban1k(caption_folder, image_folder, output_csv)
     print(f"CSV file created at: {output_csv}")

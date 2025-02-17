@@ -15,8 +15,8 @@ def preprocess_roco(input_csv, output_csv):
     df.to_csv(output_csv, index=False, encoding="utf-8")
 
 if __name__ == "__main__":
-    input_csv_path = "path/to/your/input.csv"  # Replace with your actual input CSV file path
-    output_csv_path = "path/to/your/roco.csv"  # Replace with your desired output CSV file path
+    input_csv_path = "D:/GitHub/EffectiveTokenLength-MModels/radiologytestdata.csv"
+    output_csv_path = "D:/GitHub/EffectiveTokenLength-MModels/roco.csv"
 
     preprocess_roco(input_csv_path, output_csv_path)
     print(f"Preprocessed CSV saved to: {output_csv_path}")
