@@ -10,7 +10,7 @@ def preprocess_urban1k(caption_dir, image_dir, output_csv):
     """
     
     # Make sure the output directory exists
-    os.makedirs(os.path.dirname(output_csv), exist_ok=True)
+    # os.makedirs(os.path.dirname(output_csv), exist_ok=True)
     
     # Collect all .txt files in the caption folder
     txt_files = glob.glob(os.path.join(caption_dir, "*.txt"))
@@ -24,7 +24,7 @@ def preprocess_urban1k(caption_dir, image_dir, output_csv):
 
     with open(output_csv, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
-        writer.writerow(["document", "image_filename"])
+        writer.writerow(["image_filename", "document"])
 
         for txt_path in txt_files:
             with open(txt_path, "r", encoding="utf-8") as txt_f:
@@ -33,13 +33,13 @@ def preprocess_urban1k(caption_dir, image_dir, output_csv):
             base_name = os.path.splitext(os.path.basename(txt_path))[0]
             image_filename = base_name + ".jpg"
 
-            writer.writerow([caption_text, image_filename])
+            writer.writerow([image_filename, caption_text])
 
 
 if __name__ == "__main__":
-    caption_folder = "path/to/Urban1k/caption"  # Replace with your desired input folder for captions
-    image_folder   = "path/to/Urban1k/image"    # Replace with your desired input folder for images
-    output_csv     = "path/to/your/urban1k.csv" # Replace with your desired output CSV file path
+    caption_folder = "Urban1k/caption"  # Replace with your desired input folder for captions
+    image_folder   = "Urban1k/image"    # Replace with your desired input folder for images
+    output_csv     = "urban1k.csv" # Replace with your desired output CSV file path
 
     preprocess_urban1k(caption_folder, image_folder, output_csv)
     print(f"CSV file created at: {output_csv}")
