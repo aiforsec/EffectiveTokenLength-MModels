@@ -10,7 +10,7 @@ def json_to_csv(input_json_path, output_csv_path):
     with open(output_csv_path, 'w', newline='', encoding='utf-8') as csv_file:
         writer = csv.writer(csv_file)
         # Write header
-        writer.writerow(["imagepath", "text"])
+        writer.writerow(["image_filename", "document"])
         
         for entry in data:
             image_path = entry.get("image", "")
