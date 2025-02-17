@@ -63,18 +63,16 @@ This project relies on four main datasets: **Urban1k**, **Roco**, **Factify**, a
 
 ### Urban1k
 
-- **Hosting:** https://huggingface.co/datasets/BeichenZhang/Urban1k
 - **Description:** Urban1k is a general domain dataset
 - **Download Instructions:**
-  1. Download the zip file from the above link
-
+  1. Download the zip file from [Urban1k](https://huggingface.co/datasets/BeichenZhang/Urban1k)
 ---
 
 ### Roco
-
-- **Hosting:** https://www.kaggle.com/datasets/virajbagal/roco-dataset
+ 
 - **Description:** Roco is a dataset for medical image captioning.
-  1. Open test folder, open radiology folder, download the images folder and corresponding csv file.
+  1. Download from here [ROCO](https://www.kaggle.com/datasets/virajbagal/roco-dataset)
+  2. Open test folder, open radiology folder, download the images folder and corresponding csv file.
 
 ---
 
