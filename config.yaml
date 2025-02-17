@@ -2,7 +2,7 @@
 
 model:
   # model name ["clip_base", "clip_large", "openclip", "longclip", "align", "blip2"]
-  name: "clip_base" 
+  name: "clip_base"
 
   # checkpoint path for "longclip" model:
   checkpoint_path: "/path/to/checkpoint.pt"
