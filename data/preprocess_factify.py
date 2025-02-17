@@ -85,9 +85,9 @@ def remove_duplicate_images(input_csv, output_csv):
     
 if __name__ == "__main__":
     # Example usage
-    input_file = "D:/GitHub/factify/factify2test.csv"
-    images_output_folder = "D:/GitHub/EffectiveTokenLength-MModels/factify_images"
-    output_file = "D:/GitHub/EffectiveTokenLength-MModels/factify.csv"
+    input_file = "path/to/your/input.tsv"  # Replace with your actual TSV file path
+    images_output_folder = "path/to/your/images"  # Replace with your desired output folder for images
+    output_file = "path/to/your/factify.csv"  # Replace with your desired output CSV file path
     
     download_images_and_create_csv(
         input_tsv=input_file,
