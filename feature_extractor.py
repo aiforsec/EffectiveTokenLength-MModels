@@ -35,7 +35,7 @@ def FeatureExtractor(model_name: str, checkpoint: str = None):
         return CLIPFeatureExtractor()
     
     elif "clip_large" in model_name:
-        return CLIPFeatureExtractor("clip-vit-large-patch14")
+        return CLIPFeatureExtractor("openai/clip-vit-large-patch14")
     
     elif "longclip" in model_name:
         if checkpoint is None:
