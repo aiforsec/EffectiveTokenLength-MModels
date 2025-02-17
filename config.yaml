@@ -14,6 +14,7 @@ paths:
   results_dir: "/path/to/results" #Path to save results
 
 dataset:
+  # dataset name ["roco", "sharegpt4v", "factify", "urban1k"]
   name: "dataset_name" #Name used while saving results
 
 token_steps:
