@@ -1,8 +1,4 @@
-# feature_extractor.py
-
-
-# Import the specialized classes
-
+# Import the specialized classes for each model type.
 from models.align_feature_extractor import ALIGNFeatureExtractor
 from models.blip2_feature_extractor import BLIP2FeatureExtractor
 from models.clip_feature_extractor import CLIPFeatureExtractor
@@ -12,19 +8,17 @@ from models.openclip_feature_extractor import OpenCLIPFeatureExtractor
 
 def FeatureExtractor(model_name: str, checkpoint: str = None):
     """
-    Factory function to create the correct feature extractor instance.
+    Function to create the correct feature extractor instance.
 
     Args:
         model_name (str): The name of the model to use.
-                          Examples:
-                          - "kakaobrain/align-base"
-                          - "Salesforce/blip2-opt-2.7b"
-                          - "openai/clip-vit-large-patch14"
-                          - "ViT-B-32" (for openclip)
-        pretrained (str, optional): Pretrained weight specifier for models like OpenCLIP.
+        pretrained (str, optional): Pretrained weight specifier for models like LongCLIP.
 
     Returns:
         An instance of the appropriate FeatureExtractor subclass.
+
+    Raises:
+        ValueError: If an unsupported model name is provided or if LongCLIP is used without a checkpoint.
     """
     model_name = model_name.lower()
 
