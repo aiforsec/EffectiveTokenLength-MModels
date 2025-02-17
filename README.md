@@ -91,9 +91,8 @@ This project relies on four main datasets: **Urban1k**, **Roco**, **Factify**, a
 - **Hosting:** Private / Internal
 - **Description:** ShareGPT4V is a general domain dataset.
 - **Access Instructions:**
-  1. If this dataset is hosted internally, please follow your organization’s guidelines or contact the relevant team for access.
-  2. Place the dataset in `data/sharegpt4v` once obtained.
-  3. Update your configuration to reference the correct path.
+  1. Access the dataset from here [SHAREGPT4V](https://sharegpt4v.github.io/)
+  2. Download 100k json file and image zips, then extract the images in separate folder
 
 ---
 
@@ -111,7 +110,7 @@ Run the specific preprocessfile for the dataset before running benchmark.
 Before running the analysis, open the `config.yaml` file and adjust any parameters necessary for your specific setup—such as dataset paths, model names, and output directories. Once your configuration is set, you can execute the analysis with:
 
    ```bash
-   python benchmark.py --config config.yaml
+   python benchmark.py
    ```
 ## Contact 
 
