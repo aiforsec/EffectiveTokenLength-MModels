@@ -75,10 +75,9 @@ This project relies on four main datasets: **Urban1k**, **Roco**, **Factify**, a
 
 ### Factify
 
-- **Hosting:** Private / Permission-Required
 - **Description:** Factify is a fake news dataset
 - **Access Instructions:**
-  1. Contact the dataset owners at {TO BE FILLED}
+  1. On opening the [Factify Github](https://github.com/surya1701/Factify-2.0) visit the codalabs link and request permission for the dataset.
   2. Once permission is granted, you will receive a download link or instructions on how to access the dataset.
 
 ---
