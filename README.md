@@ -127,6 +127,7 @@ If you wish to expand the experiment with your own dataset, please follow the gu
    Create a folder that contains all the images referenced in the CSV file. Ensure that the filenames in the CSV exactly match the names of the image files (including extensions) in this folder.  
 3. **Directory Structure**
    A recommended structure is:
+   ```plaintext
    my_dataset/
   ├── data.csv
   └── images/
