@@ -114,7 +114,7 @@ Before running the analysis, open the `config.yaml` file and adjust any paramete
 If you wish to expand the experiment with your own dataset, please follow the guidelines below to format your data correctly:
 
 1. **CSV File Requirements:**  
-   Create a CSV file that contains at least two columns:
+   Create a CSV file that contains two columns:
    - **document:** Contains the text data (e.g., caption, description, or any textual input).
    - **image_filename:** Contains the exact filename of the corresponding image.
    
