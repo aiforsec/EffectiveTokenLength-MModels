@@ -106,6 +106,37 @@ Before running the analysis, open the `config.yaml` file and adjust any paramete
    ```bash
    python benchmark.py
    ```
+
+---
+
+## Preparing Your Own Dataset
+
+If you wish to expand the experiment with your own dataset, please follow the guidelines below to format your data correctly:
+
+1. **CSV File Requirements:**  
+   Create a CSV file that contains at least two columns:
+   - **document:** Contains the text data (e.g., caption, description, or any textual input).
+   - **image_filename:** Contains the exact filename of the corresponding image.
+   
+   **Example CSV Content:**
+   ```csv
+   document,image_filename
+   "A scenic view of a mountain lake.","lake.jpg"
+   "Close-up of a blooming flower.","flower.png"
+2. **Image Folder**
+   Create a folder that contains all the images referenced in the CSV file. Ensure that the filenames in the CSV exactly match the names of the image files (including extensions) in this folder.  
+3. **Directory Structure**
+   A recommended structure is:
+   my_dataset/
+  ├── data.csv
+  └── images/
+    ├── lake.jpg
+    ├── flower.png
+    └── ...
+4. **Updating Configuration**
+   Once your dataset is prepared, update the config.yaml file with the appropriate paths:
+  - dataset_csv: Path to your CSV file (e.g., my_dataset/data.csv).
+  - image_folder: Path to your images folder (e.g., my_dataset/images).
 ## Contact 
 
 If you have any questions or require further assistance, please reach out to us at ln8378@rit.edu
