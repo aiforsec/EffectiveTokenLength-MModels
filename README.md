@@ -136,11 +136,11 @@ If you wish to expand the experiment with your own dataset, please follow the gu
      ├── lake.jpg
      ├── flower.png
      └── ...
-     
+
 4. **Updating Configuration:**
    Once your dataset is prepared, update the config.yaml file with the appropriate paths:
-  - dataset_csv: Path to your CSV file (e.g., my_dataset/data.csv).
-  - image_folder: Path to your images folder (e.g., my_dataset/images).
+    - dataset_csv: Path to your CSV file (e.g., my_dataset/data.csv).
+    - image_folder: Path to your images folder (e.g., my_dataset/images).
 
 ---
 
