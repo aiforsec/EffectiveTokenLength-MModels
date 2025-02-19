@@ -49,8 +49,10 @@ Follow these steps to set up the project locally:
    python3 -m venv venv  
    source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-3. **Install Dependencies:**
-    pip install -r requirements.txt
+3. **Install Dependencies:**  
+
+   ```bash
+   pip install -r requirements.txt
 
 ---
 
