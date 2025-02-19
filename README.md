@@ -151,15 +151,15 @@ If you want to integrate your new model into the existing feature extraction pip
 1. **Updating model_template.py:**  
    Using models/feature_extractor_template.py create a new feature extractor class (e.g., YourCustomFeatureExtractor) in the models directory and replace the placeholders methods with your own implementation:
    - **Model Initialization:** Initialize and load the model.
-   - **Feature Extraction:** Implement the get_text_features and get_image_features methods to suit your data and model requirements.
+   - **Feature Extraction:** Implement the get_text_features and get_image_features methods to suit your data and model requirements.  
    
    This class should follow the pattern of the existing feature extractor files.
 
-2. **Updating feature_extractor.py:**
+2. **Updating feature_extractor.py:**  
    Import your feature extractor class and add a condition in the FeatureExtractor function within feature_extractor.py. 
    This ensures that when "model_name" matches your custom model’s identifier, the correct feature extractor is returned.
 
-3. **Updating Configuration:**
+3. **Updating Configuration:**  
    Once your model_feature_extractor is prepared, update the config.yaml file with the appropriate data:
     - model/name: "model_name" used in feature_extractor function (e.g., clip_base, align).
 
