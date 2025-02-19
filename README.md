@@ -43,9 +43,11 @@ Follow these steps to set up the project locally:
    git clone https://github.com/aiforsec/EffectiveTokenLength-MModels.git
    cd EffectiveTokenLength-MModels
 
-2. **Create a virtual environment(recommended):**
-    python3 -m venv venv
-    source venv/bin/activate  # On Windows: venv\Scripts\activate
+2. **Create a virtual environment(recommended):**  
+
+   ```bash
+   python3 -m venv venv  
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 3. **Install Dependencies:**
     pip install -r requirements.txt
