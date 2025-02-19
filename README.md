@@ -144,7 +144,7 @@ If you wish to expand the experiment with your own dataset, please follow the gu
 
 ---
 
-## Benchmark your Models
+## Benchmark Your Models
 
 If you want to integrate your new model into the existing feature extraction pipeline, you must:
 
