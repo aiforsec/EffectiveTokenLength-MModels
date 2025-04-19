@@ -1,0 +1,23 @@
+# config.yaml
+
+model:
+  # model name ["clip_base", "clip_large", "openclip", "longclip", "align", "blip2"]
+  name: "clip_base"
+
+  # checkpoint path for "longclip" model:
+  # checkpoint_path: "/path/to/checkpoint.pt"
+
+paths:
+  csv_path: "data/urban1k.csv" #Path to csv file containing image paths and captions
+  image_folder: "data/Urban1k/image/" #Path to folder containing images
+  faiss_save_dir: "faiss_save_dir/" #Path to save faiss index
+  results_dir: "results/" #Path to save results
+
+dataset:
+  # dataset name ["roco", "sharegpt4v", "factify", "urban1k"]
+  name: "urban1k" #Name used while saving results
+
+token_steps:
+  start: 1 #Start token length
+  stop: 100 #Stop token length
+  step: 10 #Step size for token length
